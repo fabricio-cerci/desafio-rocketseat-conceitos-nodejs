@@ -36,9 +36,13 @@ app.put("/repositories/:id", (request, response) => {
   
   const repository = repositories.find(repository => repository.id === id);
 
-  repository.title = title;
-  repository.url = url;
-  repository.techs = techs;
+  if(!repository){
+    return response.status(400).json({ error: 'Repository does not exist'});
+  }
+
+  repository.title = title ? title : repository.title;
+  repository.url = url ? url : repository.url;
+  repository.techs = techs ? techs : repository.techs;
 
   return response.json(repository);
 });
